@@ -1,0 +1,23 @@
+name: Semantic release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  semantic-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+      - name: run semantic-release
+        run: |
+          npx -p @semantic-release/github -p @semantic-release/git -p semantic-release -c semantic-release --allow-same-version
+        env:
+          CI: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

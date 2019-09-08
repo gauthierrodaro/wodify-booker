@@ -1,0 +1,48 @@
+name: Build and Deploy to Heroku
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use docker
+        uses: actions/docker/cli@master
+      - name: Docker build
+        run: |
+          docker build -t web .
+      - name: Heroku build
+        uses: actions/heroku@master
+        with:
+          args: "container:login"
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      - name: Heroku push
+        uses: actions/heroku@master
+        with:
+          args: "container:push web"
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP: ${{ secrets.HEROKU_APP }}
+      - name: Heroku set env vars
+        uses: actions/heroku@master
+        with:
+          args: "config:set WODIFY_USERNAME=$WODIFY_USERNAME WODIFY_PASSWORD=$WODIFY_PASSWORD SLACK_WEBHOOK_URL=$SLACK_WEBHOOK_URL"
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP: ${{ secrets.HEROKU_APP }}
+          WODIFY_USERNAME: ${{ secrets.WODIFY_USERNAME }}
+          WODIFY_PASSWORD: ${{ secrets.WODIFY_PASSWORD }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Heroku deploy
+        uses: actions/heroku@master
+        with:
+          args: "container:release web"
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+          HEROKU_APP: ${{ secrets.HEROKU_APP }}
