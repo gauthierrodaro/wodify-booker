@@ -42,5 +42,5 @@
     "start:prod": "NODE_ENV=production ts-node-dev --no-notify --respawn --transpileOnly --ignore-watch node_modules src/index.ts"
   },
   "license": "MIT",
-  "version": "1.1.8"
+  "version": "1.0.0"
 }
