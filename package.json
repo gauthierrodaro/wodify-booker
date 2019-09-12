@@ -43,5 +43,5 @@
     "start:dev": "NODE_ENV=development ts-node-dev --transpileOnly --ignore-watch node_modules src/index.ts",
     "start:prod": "NODE_ENV=production ts-node-dev --no-notify --respawn --transpileOnly --ignore-watch node_modules src/index.ts"
   },
-  "version": "1.0.5"
+  "version": "1.1.0"
 }
