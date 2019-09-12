@@ -2,10 +2,8 @@ name: Build and Deploy to Heroku
 
 on:
   push:
-    branches:
-      - master
     tags:
-      - "v*"
+    - "v*"
 
 jobs:
   build-and-deploy:
