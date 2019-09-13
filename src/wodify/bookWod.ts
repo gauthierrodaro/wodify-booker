@@ -29,10 +29,10 @@ export const bookWod = async (date: moment.Moment): Promise<void> => {
     await register2Wod(browser, { date })
     try {
       await verifyBooking(browser, { date })
+      await webhook.send(slackMessages.success(date))
     } catch (error) {
       await webhook.send(slackMessages.warning(date))
     }
-    await webhook.send(slackMessages.success(date))
   } catch (error) {
     await webhook.send(slackMessages.error(date, error))
   }
